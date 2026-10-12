@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#2B59FF">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="खेल खज़ाना">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<title>खेल खज़ाना – फ्री ऑनलाइन गेम्स</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Hind:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F1F4FF;--ink:#14213D;--card:#fff;--muted:#56628A;--blue:#2B59FF;--pink:#FF4F7B;--sun:#FFC93C;--mint:#1FB58F;--line:#D5DCF5;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#0F1733;--ink:#EEF1FF;--card:#1A2550;--muted:#A3AED6;--line:#2E3B78}}
+:root[data-theme="dark"]{--bg:#0F1733;--ink:#EEF1FF;--card:#1A2550;--muted:#A3AED6;--line:#2E3B78}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Hind","Noto Sans Devanagari",system-ui,sans-serif;font-size:17px;line-height:1.5;-webkit-tap-highlight-color:transparent}
+h1,h2,h3,.brand,.btn,b{font-family:"Baloo 2","Noto Sans Devanagari",system-ui,sans-serif}
+.wrap{max-width:720px;margin:0 auto;padding:0 16px 40px}
+header{display:flex;align-items:center;justify-content:space-between;padding:14px 0}
+.brand{font-weight:800;font-size:1.35rem;display:flex;align-items:center;gap:8px}
+.brand i{font-style:normal;background:var(--sun);color:#14213D;border-radius:10px;padding:0 8px}
+h1{font-size:clamp(2.2rem,9vw,3.6rem);line-height:1.05;margin:10px 0 8px;font-weight:800}
+.lead{color:var(--muted);margin:0 0 20px;max-width:34ch}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.tile{border:0;text-align:left;cursor:pointer;border-radius:22px;padding:16px;min-height:150px;display:flex;flex-direction:column;justify-content:space-between;color:#14213D;font:inherit}
+.tile:focus-visible,.btn:focus-visible,.card:focus-visible,.dp:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+.tile .em{font-size:2.6rem;line-height:1}
+.tile h3{margin:0;font-size:1.25rem;line-height:1.1}
+.tile p{margin:2px 0 0;font-size:.9rem;opacity:.85}
+.tile.big{grid-column:span 2;min-height:170px;border-radius:30px}
+.tile.big .em{font-size:3.6rem}
+.t-aim{background:var(--sun)}.t-snake{background:var(--mint)}.t-mem{background:var(--blue);color:#fff}.t-react{background:var(--pink);color:#fff}
+.ad{margin:18px 0;border:2px dashed var(--line);border-radius:14px;min-height:90px;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:.85rem;text-align:center;padding:8px}
+.btn{border:0;border-radius:14px;background:var(--ink);color:var(--bg);font-size:1.05rem;font-weight:700;padding:10px 20px;cursor:pointer}
+.btn.alt{background:transparent;color:var(--ink);border:2px solid var(--line)}
+.btn.go{background:var(--blue);color:#fff;width:100%;margin-top:12px;padding:12px}
+.top{display:flex;align-items:center;gap:12px;padding:12px 0}
+.top h2{margin:0;font-size:1.5rem}
+.hud{display:flex;justify-content:space-between;gap:8px;background:var(--card);border-radius:14px;padding:8px 14px;margin-bottom:10px}
+.hud b{font-size:1.2rem}
+.arena{position:relative;height:min(58vh,440px);background:var(--card);border-radius:20px;overflow:hidden;touch-action:manipulation;user-select:none;-webkit-user-select:none}
+.tg{position:absolute;border-radius:50%;background:var(--pink);border:5px solid #fff;box-shadow:0 0 0 5px var(--pink);cursor:pointer}
+.msg{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:16px;background:color-mix(in srgb,var(--card) 88%,transparent);font-size:1.1rem}
+.msg b{font-size:2rem;display:block}
+canvas{display:block;width:100%;max-width:360px;margin:0 auto;border-radius:16px;background:var(--card);touch-action:none}
+.pad{display:grid;grid-template-columns:repeat(3,64px);grid-template-rows:repeat(2,56px);gap:6px;justify-content:center;margin-top:12px}
+.dp{border:0;border-radius:14px;background:var(--card);color:var(--ink);font-size:1.4rem;cursor:pointer}
+.dp.u{grid-column:2}.dp.l{grid-row:2;grid-column:1}.dp.d{grid-row:2;grid-column:2}.dp.r{grid-row:2;grid-column:3}
+.mem{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.card{aspect-ratio:1;border:0;border-radius:16px;background:var(--blue);color:transparent;font-size:2rem;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.card.on{background:var(--card);color:inherit}
+.card.ok{background:var(--mint);color:#14213D}
+.react{height:min(52vh,400px);border-radius:22px;border:0;width:100%;color:#fff;font-size:1.6rem;font-weight:700;cursor:pointer;background:var(--blue);padding:16px;font-family:"Baloo 2",system-ui,sans-serif}
+.react.wait{background:var(--pink)}.react.now{background:var(--mint);color:#14213D}
+[hidden]{display:none!important}
+@media (prefers-reduced-motion:no-preference){.tile{transition:transform .12s}.tile:active{transform:scale(.97)}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- होम -->
+<section id="home">
+  <header><div class="brand"><i>खे</i> खेल खज़ाना</div></header>
+  <h1>फ्री गेम्स,<br>कभी भी खेलो</h1>
+  <p class="lead">इंस्टॉल की ज़रूरत नहीं। फ़ोन पर सीधे खेलो।</p>
+
+  <div class="grid">
+    <button class="tile big t-aim" data-g="aim"><span class="em">🎯</span><span><h3>एम ट्रेनर</h3><p>30 सेकंड में जितने टारगेट मार सको</p></span></button>
+    <button class="tile t-snake" data-g="snake"><span class="em">🐍</span><span><h3>स्नेक</h3><p>खाओ, बढ़ो</p></span></button>
+    <button class="tile t-mem" data-g="mem"><span class="em">🧠</span><span><h3>मेमोरी</h3><p>जोड़ियाँ मिलाओ</p></span></button>
+    <button class="tile big t-react" data-g="react"><span class="em">⚡</span><span><h3>रिएक्शन टेस्ट</h3><p>हरा होते ही दबाओ। तुम्हारा रिएक्शन कितना तेज़ है?</p></span></button>
+  </div>
+
+  <!-- यहाँ अपने विज्ञापन (AdSense आदि) का कोड लगाओ -->
+  <aside class="ad" aria-label="विज्ञापन">विज्ञापन की जगह (होम पेज)</aside>
+</section>
+
+<!-- गेम स्क्रीन -->
+<section id="play" hidden>
+  <div class="top"><button class="btn alt" id="back" aria-label="वापस">← वापस</button><h2 id="ptitle"></h2></div>
+  <div id="stage"></div>
+  <!-- यहाँ दूसरा विज्ञापन -->
+  <aside class="ad" aria-label="विज्ञापन">विज्ञापन की जगह (गेम के नीचे)</aside>
+</section>
+
+</div>
+
+<script>
+(function(){
+  var home=document.getElementById('home'),play=document.getElementById('play'),stage=document.getElementById('stage'),ptitle=document.getElementById('ptitle');
+  var cleanup=null;
+  function best(k,v,low){
+    try{var o=parseFloat(localStorage.getItem('kk_'+k));
+      if(v===undefined) return isNaN(o)?null:o;
+      if(isNaN(o)||(low?v<o:v>o)){localStorage.setItem('kk_'+k,v);return v;}
+      return o;}catch(e){return v===undefined?null:v;}
+  }
+  function show(g){
+    if(cleanup){cleanup();cleanup=null;}
+    stage.innerHTML='';
+    if(!g){home.hidden=false;play.hidden=true;return;}
+    home.hidden=true;play.hidden=false;window.scrollTo(0,0);
+    var m={aim:['एम ट्रेनर',aim],snake:['स्नेक',snake],mem:['मेमोरी',mem],react:['रिएक्शन टेस्ट',react]}[g];
+    ptitle.textContent=m[0];cleanup=m[1](stage)||null;
+  }
+  document.querySelectorAll('.tile').forEach(function(b){b.onclick=function(){show(b.dataset.g)}});
+  document.getElementById('back').onclick=function(){show(null)};
+
+  /* ---------- एम ट्रेनर ---------- */
+  function aim(box){
+    box.innerHTML='<div class="hud"><span>समय <b id="t">30</b></span><span>स्कोर <b id="s">0</b></span><span>सटीकता <b id="a">–</b></span></div><div class="arena" id="ar"><div class="msg" id="m"><div><b>तैयार?</b>टारगेट पर टैप करो। 30 सेकंड हैं।<br><span id="bst"></span></div></div></div><button class="btn go" id="go">शुरू करो</button>';
+    var ar=box.querySelector('#ar'),m=box.querySelector('#m'),go=box.querySelector('#go');
+    var tEl=box.querySelector('#t'),sEl=box.querySelector('#s'),aEl=box.querySelector('#a');
+    var b0=best('aim');box.querySelector('#bst').textContent=b0!==null?'सबसे अच्छा स्कोर: '+b0:'';
+    var score,clicks,time,iv,mv,tg,run=false;
+    function spawn(){
+      if(tg) tg.remove();
+      var size=Math.max(36,64-(30-time)*1.0);
+      tg=document.createElement('div');tg.className='tg';
+      tg.style.width=tg.style.height=size+'px';
+      tg.style.left=Math.random()*(ar.clientWidth-size)+'px';
+      tg.style.top=Math.random()*(ar.clientHeight-size)+'px';
+      tg.addEventListener('pointerdown',function(e){
+        e.stopPropagation();if(!run)return;
+        score++;clicks++;sEl.textContent=score;upd();spawn();resetMove();
+      });
+      ar.appendChild(tg);
+    }
+    function upd(){aEl.textContent=clicks?Math.round(score/clicks*100)+'%':'–';}
+    function resetMove(){clearInterval(mv);mv=setInterval(function(){if(run)spawn()},1300);}
+    ar.addEventListener('pointerdown',function(){if(run){clicks++;upd();}});
+    function end(){
+      run=false;clearInterval(iv);clearInterval(mv);if(tg)tg.remove();
+      var b=best('aim',score);
+      m.hidden=false;m.innerHTML='<div><b>स्कोर '+score+'</b>सटीकता '+aEl.textContent+'<br>सबसे अच्छा: '+b+'</div>';
+      go.textContent='फिर से खेलो';go.hidden=false;
+    }
+    go.onclick=function(){
+      score=0;clicks=0;time=30;sEl.textContent=0;tEl.textContent=30;aEl.textContent='–';
+      m.hidden=true;go.hidden=true;run=true;spawn();resetMove();
+      iv=setInterval(function(){time--;tEl.textContent=time;if(time<=0)end();},1000);
+    };
+    return function(){run=false;clearInterval(iv);clearInterval(mv);};
+  }
+
+  /* ---------- स्नेक ---------- */
+  function snake(box){
+    box.innerHTML='<div class="hud"><span>स्कोर <b id="s">0</b></span><span>सबसे अच्छा <b id="b">0</b></span></div><canvas id="c"></canvas><div class="pad"><button class="dp u" data-d="u" aria-label="ऊपर">▲</button><button class="dp l" data-d="l" aria-label="बाएँ">◀</button><button class="dp d" data-d="d" aria-label="नीचे">▼</button><button class="dp r" data-d="r" aria-label="दाएँ">▶</button></div><button class="btn go" id="go">शुरू करो</button>';
+    var c=box.querySelector('#c'),x=c.getContext('2d'),N=20;
+    var size=Math.min(box.clientWidth,360);c.width=c.height=size;var cs=size/N;
+    var sEl=box.querySelector('#s'),bEl=box.querySelector('#b'),go=box.querySelector('#go');
+    bEl.textContent=best('snake')||0;
+    var sn,dir,nd,food,score,iv,over=true;
+    var V={u:[0,-1],d:[0,1],l:[-1,0],r:[1,0]};
+    function css(v){return getComputedStyle(document.documentElement).getPropertyValue(v).trim();}
+    function place(){do{food=[Math.floor(Math.random()*N),Math.floor(Math.random()*N)];}while(sn.some(function(p){return p[0]==food[0]&&p[1]==food[1]}));}
+    function draw(msg){
+      x.fillStyle=css('--card')||'#fff';x.fillRect(0,0,size,size);
+      x.fillStyle='#FF4F7B';x.beginPath();x.arc(food[0]*cs+cs/2,food[1]*cs+cs/2,cs*.38,0,7);x.fill();
+      sn.forEach(function(p,i){x.fillStyle=i?'#1FB58F':'#2B59FF';x.fillRect(p[0]*cs+1,p[1]*cs+1,cs-2,cs-2);});
+      if(msg){x.fillStyle=css('--ink')||'#000';x.font='700 26px Baloo 2, sans-serif';x.textAlign='center';x.fillText(msg,size/2,size/2);}
+    }
+    function step(){
+      dir=nd;var h=[sn[0][0]+V[dir][0],sn[0][1]+V[dir][1]];
+      if(h[0]<0||h[1]<0||h[0]>=N||h[1]>=N||sn.some(function(p){return p[0]==h[0]&&p[1]==h[1]})){
+        over=true;clearInterval(iv);var b=best('snake',score);bEl.textContent=b;draw('खत्म! स्कोर '+score);go.hidden=false;go.textContent='फिर से खेलो';return;}
+      sn.unshift(h);
+      if(h[0]==food[0]&&h[1]==food[1]){score++;sEl.textContent=score;place();}else sn.pop();
+      draw();
+    }
+    function turn(d){var o={u:'d',d:'u',l:'r',r:'l'};if(d!==o[dir])nd=d;}
+    box.querySelectorAll('.dp').forEach(function(b){b.onclick=function(){turn(b.dataset.d)}});
+    function key(e){var k={ArrowUp:'u',ArrowDown:'d',ArrowLeft:'l',ArrowRight:'r'}[e.key];if(k){e.preventDefault();turn(k);}}
+    document.addEventListener('keydown',key);
+    var sx,sy;
+    c.addEventListener('touchstart',function(e){sx=e.touches[0].clientX;sy=e.touches[0].clientY;},{passive:true});
+    c.addEventListener('touchend',function(e){
+      var dx=e.changedTouches[0].clientX-sx,dy=e.changedTouches[0].clientY-sy;
+      if(Math.max(Math.abs(dx),Math.abs(dy))<20)return;
+      turn(Math.abs(dx)>Math.abs(dy)?(dx>0?'r':'l'):(dy>0?'d':'u'));
+    });
+    go.onclick=function(){
+      sn=[[10,10],[9,10],[8,10]];dir=nd='r';score=0;sEl.textContent=0;place();over=false;go.hidden=true;draw();
+      clearInterval(iv);iv=setInterval(step,120);
+    };
+    sn=[[10,10],[9,10],[8,10]];dir=nd='r';place();draw('शुरू करो दबाओ');
+    return function(){clearInterval(iv);document.removeEventListener('keydown',key);};
+  }
+
+  /* ---------- मेमोरी ---------- */
+  function mem(box){
+    box.innerHTML='<div class="hud"><span>चालें <b id="mv">0</b></span><span>सबसे कम <b id="b">–</b></span></div><div class="mem" id="g"></div><button class="btn go" id="go">नया गेम</button>';
+    var g=box.querySelector('#g'),mvEl=box.querySelector('#mv'),bEl=box.querySelector('#b'),go=box.querySelector('#go');
+    var bb=best('mem');bEl.textContent=bb!==null?bb:'–';
+    var em=['🍎','🚗','🐶','⚽','🌙','🎸','🍕','🚀'],first,lock,moves,found,to;
+    function start(){
+      var d=em.concat(em).sort(function(){return Math.random()-.5});
+      g.innerHTML='';first=null;lock=false;moves=0;found=0;mvEl.textContent=0;
+      d.forEach(function(e){
+        var b=document.createElement('button');b.className='card';b.textContent=e;b.setAttribute('aria-label','कार्ड');
+        b.onclick=function(){
+          if(lock||b.classList.contains('on')||b.classList.contains('ok'))return;
+          b.classList.add('on');
+          if(!first){first=b;return;}
+          moves++;mvEl.textContent=moves;
+          if(first.textContent===b.textContent){
+            first.classList.replace('on','ok');b.classList.replace('on','ok');first=null;found++;
+            if(found==8){bEl.textContent=best('mem',moves,true);}
+          }else{
+            lock=true;var a=first;first=null;
+            to=setTimeout(function(){a.classList.remove('on');b.classList.remove('on');lock=false;},700);
+          }
+        };
+        g.appendChild(b);
+      });
+    }
+    go.onclick=start;start();
+    return function(){clearTimeout(to);};
+  }
+
+  /* ---------- रिएक्शन टेस्ट ---------- */
+  function react(box){
+    box.innerHTML='<div class="hud"><span>आख़िरी <b id="l">–</b></span><span>सबसे तेज़ <b id="b">–</b></span></div><button class="react" id="r">शुरू करने के लिए दबाओ</button>';
+    var r=box.querySelector('#r'),lEl=box.querySelector('#l'),bEl=box.querySelector('#b');
+    var bb=best('react');if(bb!==null)bEl.textContent=bb+' ms';
+    var st='idle',t0,to;
+    r.onclick=function(){
+      if(st==='idle'){
+        st='wait';r.className='react wait';r.textContent='रुको… हरा होने का इंतज़ार करो';
+        to=setTimeout(function(){st='go';r.className='react now';r.textContent='अभी दबाओ!';t0=performance.now();},1500+Math.random()*2500);
+      }else if(st==='wait'){
+        clearTimeout(to);st='idle';r.className='react';r.textContent='बहुत जल्दी! फिर से दबाओ';
+      }else if(st==='go'){
+        var ms=Math.round(performance.now()-t0);st='idle';r.className='react';
+        lEl.textContent=ms+' ms';bEl.textContent=best('react',ms,true)+' ms';
+        r.textContent=ms+' ms · फिर से खेलने के लिए दबाओ';
+      }
+    };
+    return function(){clearTimeout(to);};
+  }
+})();
+</script>
+<script>
+if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){});});}
+</script>
+</body>
+</html>
