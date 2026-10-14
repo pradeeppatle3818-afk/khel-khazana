@@ -1,5 +1,5 @@
-const CACHE = 'khel-khazana-v12';
-const FILES = ['./', './index.html', './tirandaz.html', './khadaan3d.html', './manifest.webmanifest', './icon-192.png', './icon-512.png', './icon-maskable.png'];
+const CACHE = 'khel-khazana-v17';
+const FILES = ['./', './index.html', './tirandaz.html', './khadaan3d.html', './arcade1.html', './arcade2.html', './arcade3.html', './arcade4.html', './shop.html', './puzzle.html', './action.html', './music.html', './manifest.webmanifest', './icon-192.png', './icon-512.png', './icon-maskable.png'];
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(FILES)).then(() => self.skipWaiting()));
 });

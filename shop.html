@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<meta name="theme-color" content="#070A18"><title>Arcade · Shop</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800;900&family=Inter:wght@500;600&display=swap" rel="stylesheet">
+<style>:root{--bg:#070A18;--bg2:#0E1330;--card:rgba(255,255,255,.065);--card2:rgba(255,255,255,.11);--line:rgba(255,255,255,.12);--txt:#F4F6FF;--mut:#98A3C9;--a1:#7C5CFF;--a2:#FF4FA3;--a3:#22D3EE;--gold:#FFC83D;--ok:#2EE59D;--bad:#FF5C6C;--r:20px;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme: light){:root:not([data-theme="dark"]){--bg:#EEF1FF;--bg2:#DCE2FF;--card:rgba(255,255,255,.78);--card2:rgba(255,255,255,.95);--line:rgba(30,40,100,.14);--txt:#12173A;--mut:#566096}}
+:root[data-theme="light"]{--bg:#EEF1FF;--bg2:#DCE2FF;--card:rgba(255,255,255,.78);--card2:rgba(255,255,255,.95);--line:rgba(30,40,100,.14);--txt:#12173A;--mut:#566096}
+html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;height:100%;color:var(--txt);font:500 16px/1.4 "Inter","Segoe UI",system-ui,sans-serif;overflow:hidden;user-select:none;-webkit-user-select:none;touch-action:manipulation;
+background:radial-gradient(900px 520px at 8% -8%,rgba(124,92,255,.38),transparent 60%),radial-gradient(800px 520px at 108% 8%,rgba(34,211,238,.26),transparent 60%),radial-gradient(700px 500px at 50% 112%,rgba(255,79,163,.22),transparent 60%),var(--bg)}
+h1,h2,h3,.fx{font-family:"Outfit","Inter",system-ui,sans-serif;letter-spacing:-.01em}
+#app{position:relative;height:100%;max-width:720px;margin:0 auto;display:flex;flex-direction:column}
+.glass{background:var(--card);border:1px solid var(--line);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);border-radius:var(--r)}
+.topbar{display:flex;align-items:center;gap:10px;padding:12px 14px 6px}
+.brand{font:800 1.25rem "Outfit",sans-serif;display:flex;align-items:center;gap:8px;flex:1}
+.brand i{width:30px;height:30px;border-radius:10px;background:linear-gradient(135deg,var(--a1),var(--a2));display:grid;place-items:center;font-style:normal;font-size:1rem;box-shadow:0 6px 18px rgba(124,92,255,.5)}
+.pill{display:flex;align-items:center;gap:6px;padding:6px 12px;border-radius:999px;background:var(--card);border:1px solid var(--line);font:700 .9rem "Outfit",sans-serif;white-space:nowrap}
+.pill b{font-weight:800}
+.iconbtn{width:38px;height:38px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--txt);font-size:1.05rem;display:grid;place-items:center;cursor:pointer;flex:none}
+.iconbtn:active,.btn:active,.card:active,.node:active{transform:scale(.96)}
+.btn{border:0;border-radius:16px;padding:13px 22px;font:700 1rem "Outfit",sans-serif;color:#fff;cursor:pointer;background:linear-gradient(135deg,var(--a1),var(--a2));box-shadow:0 8px 24px rgba(124,92,255,.38);transition:transform .08s}
+.btn.alt{background:var(--card2);color:var(--txt);box-shadow:none;border:1px solid var(--line)}
+.btn.gold{background:linear-gradient(135deg,#FFC83D,#FF8A3D);color:#2a1600;box-shadow:0 8px 24px rgba(255,170,60,.35)}
+.btn.sm{padding:9px 14px;font-size:.88rem;border-radius:12px}
+.btn.block{width:100%}
+.btn:disabled{opacity:.45;box-shadow:none}
+button:focus-visible{outline:3px solid var(--a3);outline-offset:2px}
+.scroll{flex:1;min-height:0;overflow:auto;padding:6px 14px 28px;-webkit-overflow-scrolling:touch}
+.hero{position:relative;overflow:hidden;border-radius:26px;padding:20px 18px;margin:6px 0 14px;background:linear-gradient(135deg,rgba(124,92,255,.85),rgba(255,79,163,.8));box-shadow:0 14px 40px rgba(124,92,255,.35)}
+.hero h1{margin:0 0 4px;font-size:1.7rem;line-height:1.05;font-weight:900}
+.hero p{margin:0 0 12px;opacity:.92;max-width:26ch}
+.hero .big{position:absolute;right:-8px;bottom:-18px;font-size:7rem;opacity:.9;filter:drop-shadow(0 10px 20px rgba(0,0,0,.35));transform:rotate(-8deg)}
+.sec{display:flex;align-items:center;justify-content:space-between;margin:14px 2px 8px;font:800 1.05rem "Outfit",sans-serif}
+.sec small{color:var(--mut);font:600 .78rem "Inter",sans-serif}
+.chips{display:flex;gap:8px;overflow:auto;padding:2px 0 6px}
+.chip{flex:none;padding:7px 14px;border-radius:999px;background:var(--card);border:1px solid var(--line);font:700 .85rem "Outfit",sans-serif;color:var(--mut);cursor:pointer}
+.chip.on{background:linear-gradient(135deg,var(--a1),var(--a2));color:#fff;border-color:transparent}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.card{position:relative;overflow:hidden;border-radius:22px;padding:14px;min-height:190px;display:flex;flex-direction:column;justify-content:flex-end;border:1px solid var(--line);cursor:pointer;text-align:left;color:#fff;font:inherit;transition:transform .1s}
+.card .ico{position:absolute;right:-6px;top:-4px;font-size:5.2rem;filter:drop-shadow(0 10px 16px rgba(0,0,0,.35));transform:rotate(8deg)}
+.card:before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0) 35%,rgba(0,0,0,.55));z-index:0}
+.card>*{position:relative;z-index:1}
+.card h3{margin:0;font-size:1.1rem;line-height:1.1;font-weight:800}
+.card p{margin:2px 0 0;font-size:.76rem;opacity:.9;line-height:1.25}
+.tag{display:inline-block;align-self:flex-start;margin-bottom:6px;padding:2px 9px;border-radius:999px;font:800 .66rem "Outfit",sans-serif;background:rgba(0,0,0,.35);letter-spacing:.04em}
+.new{position:absolute;left:10px;top:10px;z-index:2;background:var(--gold);color:#2a1600;font:900 .62rem "Outfit",sans-serif;padding:2px 8px;border-radius:999px}
+.soon{filter:grayscale(.6) brightness(.8)}
+.hud{display:flex;align-items:center;gap:8px;padding:10px 12px 6px}
+.hud .ttl{flex:1;min-width:0}
+.hud .ttl b{display:block;font:800 1rem "Outfit",sans-serif;line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hud .ttl span{font-size:.75rem;color:var(--mut)}
+#stage{position:relative;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6px 10px;gap:8px;overflow:hidden}
+#stage.sc{justify-content:flex-start;overflow:auto;align-items:stretch}
+canvas{display:block;border-radius:18px;touch-action:none;flex:none;background:#000;box-shadow:0 10px 40px rgba(0,0,0,.45)}
+.dock{display:flex;gap:8px;justify-content:center;padding:6px 10px 12px;flex-wrap:wrap}
+.ab{position:relative;min-width:68px;padding:7px 10px 6px;border-radius:16px;border:1px solid var(--line);background:var(--card2);color:var(--txt);display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;font:inherit}
+.ab b{font-size:1.35rem;line-height:1.1}.ab small{font:700 .66rem "Outfit",sans-serif;color:var(--mut)}
+.ab i{font:800 .68rem "Outfit",sans-serif;font-style:normal;color:var(--gold)}
+.ab:disabled{opacity:.4}
+.map{display:flex;flex-direction:column;align-items:center;gap:14px;padding:10px 0 30px}
+.node{width:68px;height:68px;border-radius:50%;border:0;display:grid;place-items:center;font:900 1.3rem "Outfit",sans-serif;color:#fff;cursor:pointer;position:relative;background:linear-gradient(135deg,#3a4170,#262c52);box-shadow:inset 0 -5px 0 rgba(0,0,0,.25),0 8px 20px rgba(0,0,0,.35)}
+.node.done{background:linear-gradient(135deg,#2EE59D,#13a36e)}
+.node.cur{background:linear-gradient(135deg,var(--a1),var(--a2));animation:pulse 1.6s infinite}
+.node.lock{opacity:.5}
+.node s{position:absolute;bottom:-9px;left:0;right:0;text-decoration:none;font-size:.62rem;color:var(--gold);letter-spacing:1px;text-shadow:0 1px 2px #000}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(124,92,255,.7),inset 0 -5px 0 rgba(0,0,0,.25)}50%{box-shadow:0 0 0 14px rgba(124,92,255,0),inset 0 -5px 0 rgba(0,0,0,.25)}}
+.sheetbg{position:absolute;inset:0;background:rgba(3,5,18,.62);z-index:30;display:flex;align-items:flex-end;justify-content:center;animation:fade .2s}
+.sheet{width:100%;max-width:520px;border-radius:28px 28px 0 0;padding:22px 18px calc(22px + env(safe-area-inset-bottom,0px));text-align:center;background:linear-gradient(180deg,rgba(40,34,92,.97),rgba(14,18,48,.99));border:1px solid var(--line);animation:up .28s cubic-bezier(.2,.9,.3,1.2)}
+@media (prefers-color-scheme: light){.sheet{background:linear-gradient(180deg,#fff,#E5E9FF)}}
+.sheet h2{margin:0 0 4px;font-size:1.7rem;font-weight:900}
+.sheet .sub{color:var(--mut);margin:0 0 10px}
+.stars{font-size:2.6rem;letter-spacing:6px;color:var(--gold);text-shadow:0 4px 18px rgba(255,200,61,.5)}
+.stars span{display:inline-block;animation:pop .5s both}.stars span:nth-child(2){animation-delay:.15s}.stars span:nth-child(3){animation-delay:.3s}
+.stars .off{color:rgba(255,255,255,.2);text-shadow:none}
+.rw{display:flex;gap:8px;justify-content:center;margin:10px 0 14px;flex-wrap:wrap}
+.btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+@keyframes up{from{transform:translateY(60px);opacity:0}to{transform:none;opacity:1}}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes pop{from{transform:scale(0) rotate(-40deg);opacity:0}to{transform:none;opacity:1}}
+#toast{position:absolute;top:64px;left:50%;transform:translateX(-50%) translateY(-10px);background:rgba(10,12,34,.95);color:#fff;border:1px solid var(--line);padding:9px 16px;border-radius:999px;opacity:0;pointer-events:none;transition:all .22s;z-index:50;font:600 .9rem "Inter",sans-serif;max-width:92%;text-align:center}
+#toast.show{opacity:1;transform:translateX(-50%)}
+.conf{position:absolute;top:-20px;font-size:1.4rem;z-index:40;pointer-events:none;animation:fall 1.8s linear forwards}
+@keyframes fall{to{transform:translateY(105vh) rotate(540deg);opacity:.9}}
+.tabs{display:flex;gap:6px;padding:4px;background:var(--card);border-radius:16px;border:1px solid var(--line);margin:4px 0 10px}
+.tabs button{flex:1;border:0;border-radius:12px;padding:9px 4px;background:transparent;color:var(--mut);font:700 .85rem "Outfit",sans-serif;cursor:pointer}
+.tabs button.on{background:linear-gradient(135deg,var(--a1),var(--a2));color:#fff}
+.item{display:flex;align-items:center;gap:12px;padding:12px;margin-bottom:10px;border-radius:18px}
+.item .em{width:50px;height:50px;border-radius:14px;display:grid;place-items:center;font-size:1.7rem;background:linear-gradient(135deg,rgba(124,92,255,.35),rgba(255,79,163,.3));flex:none}
+.item .tx{flex:1;min-width:0}.item .tx b{display:block;font:800 .98rem "Outfit",sans-serif}.item .tx span{display:block;font-size:.78rem;color:var(--mut);line-height:1.25}
+.bar{height:8px;border-radius:6px;background:rgba(255,255,255,.12);overflow:hidden}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--a3),var(--ok))}
+.mini{font-size:.78rem;color:var(--mut)}
+.center{text-align:center}
+[hidden]{display:none!important}
+
+.ab.shopb{border-color:var(--gold);background:linear-gradient(135deg,rgba(255,200,61,.22),rgba(255,138,61,.2))}
+.ab.shopb i{color:var(--gold)}
+
+.rail{position:absolute;right:6px;top:62px;z-index:8;display:flex;flex-direction:column;gap:7px}
+.rail .ab{min-width:0;width:48px;padding:5px 0 3px;background:rgba(8,11,36,.62);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);border-radius:15px}
+.rail .ab b{font-size:1.3rem}.rail .ab small{display:none}.rail .ab i{font-size:.6rem}
+.rail .ab.shopb{background:linear-gradient(135deg,rgba(255,200,61,.5),rgba(255,138,61,.45))}
+</style></head>
+<body><div id="app">
+<div class="topbar"><a class="iconbtn" href="index.html" style="text-decoration:none" aria-label="Home">←</a><div class="brand"><span>SHOP</span></div><div class="pill">🪙 <b id="pc">0</b></div><div class="pill">💎 <b id="pg">0</b></div></div>
+<div class="scroll" id="sc"></div><div id="toast"></div></div>
+<script>
+(function(){
+var CK='arc_core_v1',W={coins:150,gems:10,xp:0,sound:true,music:true,daily:'',games:{},theme:'violet',boost:{coin:0,xp:0}};
+try{var j=JSON.parse(localStorage.getItem(CK));if(j)W=Object.assign(W,j);}catch(e){}if(!W.boost)W.boost={coin:0,xp:0};
+var TH={violet:['#7C5CFF','#FF4FA3','#22D3EE'],ocean:['#2563EB','#06B6D4','#34D399'],sunset:['#F97316','#EC4899','#FACC15'],emerald:['#10B981','#14B8A6','#A3E635'],pink:['#EC4899','#A855F7','#F472B6']};
+function apply(){var t=TH[W.theme]||TH.violet,s=document.documentElement.style;s.setProperty('--a1',t[0]);s.setProperty('--a2',t[1]);s.setProperty('--a3',t[2]);}apply();
+function save(){try{localStorage.setItem(CK,JSON.stringify(W));}catch(e){}}
+function fmt(n){return String(Math.floor(n)).replace(/\B(?=(\d{3})+(?!\d))/g,',');}
+var tt=0;function toast(m){var t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(tt);tt=setTimeout(function(){t.classList.remove('show');},1900);}
+function paint(){document.getElementById('pc').textContent=fmt(W.coins);document.getElementById('pg').textContent=fmt(W.gems);}
+var ITEMS=[
+ {sec:'Gem exchange'},
+ {id:'g5',e:'💎',n:'Gem pouch',d:'Trade 5 gems for 700 coins',cost:5,gem:1,give:function(){W.coins+=700;}},
+ {id:'g20',e:'💎',n:'Gem chest',d:'Trade 20 gems for 3,200 coins',cost:20,gem:1,give:function(){W.coins+=3200;}},
+ {id:'c2',e:'🪙',n:'Coin to gem',d:'Trade 2,500 coins for 3 gems',cost:2500,give:function(){W.gems+=3;}},
+ {sec:'Boosters'},
+ {id:'bc',e:'💰',n:'Double coins x5',d:'Next 5 level wins or runs give 2x coins',cost:300,give:function(){W.boost.coin+=5;}},
+ {id:'bx',e:'⚡',n:'Double XP x5',d:'Next 5 wins give 2x XP to level up faster',cost:200,give:function(){W.boost.xp+=5;}},
+ {sec:'App themes'},
+ {id:'t_ocean',e:'🌊',n:'Ocean theme',d:'Blue and aqua look for the whole app',cost:400,theme:'ocean'},
+ {id:'t_sunset',e:'🌅',n:'Sunset theme',d:'Orange and pink look',cost:400,theme:'sunset'},
+ {id:'t_emerald',e:'🍀',n:'Emerald theme',d:'Green and lime look',cost:400,theme:'emerald'},
+ {id:'t_pink',e:'💗',n:'Candy theme',d:'Pink and purple look',cost:800,theme:'pink'},
+ {id:'t_violet',e:'🔮',n:'Violet theme',d:'The default look',cost:0,theme:'violet'}
+];
+if(!W.owned)W.owned={t_violet:1};
+function render(){
+  var h='<div class="glass item" style="margin-top:8px"><div class="em">🛒</div><div class="tx"><b>Welcome to the Shop</b><span>Boosters: coins x'+(W.boost.coin>0?2:1)+' ('+W.boost.coin+' left), XP x'+(W.boost.xp>0?2:1)+' ('+W.boost.xp+' left)</span></div></div>';
+  ITEMS.forEach(function(it){if(it.sec){h+='<div class="sec">'+it.sec+'</div>';return;}
+    var own=it.theme&&W.owned[it.id],on=it.theme&&W.theme===it.theme,label=on?'Equipped':(own?'Equip':(it.gem?'💎 '+it.cost:(it.cost?'🪙 '+fmt(it.cost):'Free')));
+    h+='<div class="glass item"><div class="em">'+it.e+'</div><div class="tx"><b>'+it.n+'</b><span>'+it.d+'</span></div><button class="btn sm '+(on?'alt':'gold')+'" data-i="'+it.id+'" '+(on?'disabled':'')+'>'+label+'</button></div>';});
+  document.getElementById('sc').innerHTML=h;paint();
+}
+document.getElementById('sc').onclick=function(e){var b=e.target.closest('button');if(!b||b.disabled)return;var it=ITEMS.filter(function(x){return x.id===b.dataset.i;})[0];if(!it)return;
+  if(it.theme&&W.owned[it.id]){W.theme=it.theme;apply();save();render();return;}
+  var k=it.gem?'gems':'coins';if(W[k]<it.cost){toast('Not enough '+(it.gem?'gems':'coins'));return;}W[k]-=it.cost;
+  if(it.theme){W.owned[it.id]=1;W.theme=it.theme;apply();toast('Theme unlocked!');}else{it.give();toast('Purchased!');}save();render();};
+render();
+if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){});});}
+})();
+</script></body></html>
